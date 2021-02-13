@@ -6,7 +6,7 @@
 #                                    Penggunaan
 # 'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
 #                                    Masukkan
-# Sepertinya wordpress membuat mitigasi untuk brute force attack (this tool was useless), jadi jika anda mempunyai masukkan terhadap kelanjutan alat ini maka email ke obaobi111@gmail.com
+# Sepertinya wordpress membuat mitigasi untuk brute force attack (this tool was useless), jadi jika anda mempunyai masukkan terhadap kelanjutan alat ini maka email ke obbierrolasta@gmail.com
     
 
 from time import sleep
