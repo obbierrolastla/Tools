@@ -1,10 +1,13 @@
-#   Deskripsi
-#  Simple program untuk membrute force wordpress login page
-#  Info lanjutan tentang brutefroce -> https://en.wikipedia.org/wiki/Brute-force_attack
-#   Disclaimer
-#  Jangan digunakan untuk tindakan yang tidak dapat dipertanggung jawabkan!
-#   Penggunaan
-#  'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
+#                                    Deskripsi
+# Simple program untuk membrute force wordpress login page
+# Info lanjutan tentang brutefroce -> https://en.wikipedia.org/wiki/Brute-force_attack
+#                                    Disclaimer
+# Jangan digunakan untuk tindakan yang tidak dapat dipertanggung jawabkan!
+#                                    Penggunaan
+# 'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
+#                                    Masukkan
+# Sepertinya wordpress membuat mitigasi untuk brute force attack (this tool was useless), jadi jika anda mempunyai masukkan terhadap kelanjutan alat ini maka email ke obaobi111@gmail.com
+    
 
 from time import sleep
 from requests import *
@@ -64,9 +67,6 @@ def main(url,username,pass_file):
     the_wrong=sure_wrong(url,username)
 
     for i in range(len(file_text)):
-        i+=1
-        if(i%5==0):
-            sleep(6)
         if(send_req(url,username,file_text[i])!=the_wrong): 
            break
 
